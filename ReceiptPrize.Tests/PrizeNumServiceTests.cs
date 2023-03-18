@@ -10,9 +10,6 @@ namespace ReceiptPrize.Tests
 {
     internal class PrizeNumServiceTests
     {
-
-        PrizeNumService _prizeNumService;
-
         [SetUp]
         public void Setup()
         {
@@ -21,11 +18,11 @@ namespace ReceiptPrize.Tests
         [TearDown]
         public void End()
         {
-            _prizeNumService = null;
+
         }
 
         [Test]
-        public void Test_GetPrizeNumber_FromMinistryOfFinance()
+        public void Test_GetPrizeNumber_From_MinistryOfFinance_Success()
         {
             List<string> prizeList = Fetch_PrizeList_From_MinistryOfFinance();
 
@@ -50,9 +47,9 @@ namespace ReceiptPrize.Tests
         private List<string> Fetch_PrizeList_From_MinistryOfFinance()
         {
             IPrizeNumRepository ministryOfFinancePrizeNumRepository = new MinistryOfFinancePrizeNumRepository();
-            _prizeNumService = new PrizeNumService(ministryOfFinancePrizeNumRepository);
+            PrizeNumService prizeNumService = new PrizeNumService(ministryOfFinancePrizeNumRepository);
 
-            var prizeList = _prizeNumService.GetPrizeNumber();
+            var prizeList = prizeNumService.GetPrizeNumber();
             return prizeList;
         }
 
