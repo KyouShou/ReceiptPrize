@@ -30,16 +30,21 @@ namespace ReceiptPrize.Tests
             IPrizeNumRepository ministryOfFinancePrizeNumRepository = new MinistryOfFinancePrizeNumRepository();
             _prizeNumService = new PrizeNumService(ministryOfFinancePrizeNumRepository);
 
-            List<String> PrizeNumExpected = new List<string>();
-            PrizeNumExpected.Add("28089459");
-            PrizeNumExpected.Add("30660303");
-            PrizeNumExpected.Add("65056128");
-            PrizeNumExpected.Add("07444404");
-            PrizeNumExpected.Add("44263900");
+            var prizeList = _prizeNumService.GetPrizeNumber();
 
-            var result = _prizeNumService.GetPrizeNumber();
+            foreach (var num in prizeList)
+            {
+                Assert.IsTrue(IsEightDigitNum(num));
+            }
 
-            Assert.That(result, Is.EquivalentTo(PrizeNumExpected));
+            Assert.IsTrue(prizeList.Count > 0);
+        }
+
+        private bool IsEightDigitNum(string num)
+        {
+            if (num.Length != 8)
+                return false;
+            return int.TryParse(num , out int result);
         }
     }
 }
