@@ -19,6 +19,18 @@ namespace ReceiptPrize.Controllers
         [HttpPost]
         public IActionResult Check(string numInput)
         {
+            var isWin = _checkPrizeService.Check(numInput);
+            if (isWin)
+            {
+
+            }
+            else
+            {
+                var content = Content("沒中獎");
+                content.StatusCode = 204;
+                return content;
+            }
+
             return View();
         }
     }
