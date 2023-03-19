@@ -75,7 +75,16 @@ namespace ReceiptPrize.Tests
         public void Get_PrizeNum_Fail()
         {
             //中獎號碼不存在或獲取號碼失敗，回傳StatusCode 501
-            Assert.Fail();
+            Assume_Prize_Number_Not_Exist(_numInput);
+
+            int? statusCode = SendMockDataToControllerAction();
+
+            Assert.AreEqual(501, statusCode);
+        }
+
+        private void Assume_Prize_Number_Not_Exist(string numInput)
+        {
+            _checkPrizeServiceMock.Setup(m => m.Check(numInput)).Throws(new FetchPrizeFailException());
         }
 
         [Test]
@@ -90,7 +99,7 @@ namespace ReceiptPrize.Tests
 
         private void Assume_Number_Incorrect_Format(string numInput)
         {
-            _checkPrizeServiceMock.Setup(m => m.Check(numInput)).Throws(new NumberFormatErrorException("輸入數字格式錯誤"));
+            _checkPrizeServiceMock.Setup(m => m.Check(numInput)).Throws(new NumberFormatErrorException());
         }
     }
 }

@@ -7,7 +7,7 @@
         
         }
 
-        public NumberFormatErrorException(string message) : base(message)
+        public NumberFormatErrorException(string message = "輸入數字格式錯誤") : base(message)
         {
         
         }
