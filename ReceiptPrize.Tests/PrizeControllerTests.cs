@@ -60,7 +60,16 @@ namespace ReceiptPrize.Tests
         public void Win()
         {
             //中獎，回傳StatusCode 200
-            Assert.Fail();
+            Assume_Number_Win(_numInput);
+
+            int? statusCode = SendMockDataToControllerAction();
+
+            Assert.AreEqual(200, statusCode);
+        }
+
+        private void Assume_Number_Win(string numInput)
+        {
+            _checkPrizeServiceMock.Setup(m => m.Check(numInput)).Returns(true);
         }
 
         [Test]
