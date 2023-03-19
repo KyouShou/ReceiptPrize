@@ -20,6 +20,7 @@ namespace ReceiptPrize.Controllers
         public IActionResult Check(string numInput)
         {
             var isWin = _checkPrizeService.Check(numInput);
+
             if (isWin)
             {
 

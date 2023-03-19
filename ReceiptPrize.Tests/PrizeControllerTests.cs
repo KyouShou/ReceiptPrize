@@ -13,34 +13,46 @@ namespace ReceiptPrize.Tests
 {
     internal class PrizeControllerTests
     {
+        Mock<ICheckPrizeService> _checkPrizeServiceMock;
+        string _numInput;
+
         [SetUp]
         public void Setup()
         {
-
+            _checkPrizeServiceMock = new Mock<ICheckPrizeService>();
+            _numInput = "000";
         }
 
         [TearDown]
         public void End()
         {
-
+            _checkPrizeServiceMock = null;
         }
 
         [Test]
-        public void Did_Not_Win()
+        public void When_Did_Not_Win_Returns_StatusCode204()
         {
-            //沒中獎，回傳StatusCode 204
-            string numInput = "000";
+            Assume_Number_Did_Not_Win(_numInput);
 
-            var mockCheckPriceService = new Mock<ICheckPrizeService>();
-            mockCheckPriceService.Setup(m => m.Check(numInput)).Returns(false);
+            int? statusCode = SendMockDataToControllerAction();
 
-            PrizeController prizeController = new PrizeController(mockCheckPriceService.Object);
+            Assert.AreEqual(204, statusCode);
+        }
 
-            var response = prizeController.Check(numInput);
+        private void Assume_Number_Did_Not_Win(string numInput)
+        {
+            _checkPrizeServiceMock.Setup(m => m.Check(numInput)).Returns(false);
+        }
+
+        private int? SendMockDataToControllerAction()
+        {
+            PrizeController prizeController = new PrizeController(_checkPrizeServiceMock.Object);
+
+            var response = prizeController.Check(_numInput);
 
             var statusCode = ((ContentResult)response).StatusCode;
 
-            Assert.AreEqual(204, statusCode);       
+            return statusCode;
         }
 
         [Test]
