@@ -26,7 +26,9 @@ namespace ReceiptPrize.Controllers
 
                 if (isWin)
                 {
-
+                    var content = Content("中獎");
+                    content.StatusCode = 200;
+                    return content;
                 }
                 else
                 {
