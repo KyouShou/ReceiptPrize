@@ -43,8 +43,12 @@ namespace ReceiptPrize.Controllers
                 content.StatusCode = 400;
                 return content;
             }
-
-            return View();
+            catch (FetchPrizeFailException e)
+            {
+                var content = Content(e.ToString());
+                content.StatusCode = 501;
+                return content;
+            }
         }
     }
 }
