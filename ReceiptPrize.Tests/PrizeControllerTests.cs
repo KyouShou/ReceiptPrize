@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Moq;
 using ReceiptPrize.Controllers;
+using ReceiptPrize.Exceptions;
 using ReceiptPrize.Repository;
 using ReceiptPrize.Service;
 using System;
@@ -73,7 +74,18 @@ namespace ReceiptPrize.Tests
         public void Input_Content_Illegal()
         {
             //輸入的內容不合法，回傳StatusCode 400
+            Assume_Number_Incorrect_Format(_numInput);
+
+            int? statusCode = SendMockDataToControllerAction();
+
+            Assert.AreEqual(400, statusCode);
+
             Assert.Fail();
+        }
+
+        private void Assume_Number_Incorrect_Format(string numInput)
+        {
+            _checkPrizeServiceMock.Setup(m => m.Check(numInput)).Throws(new NumberFormatErrorException("輸入數字格是錯誤"));
         }
     }
 }
