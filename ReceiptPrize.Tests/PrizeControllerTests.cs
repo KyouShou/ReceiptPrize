@@ -71,9 +71,8 @@ namespace ReceiptPrize.Tests
         }
 
         [Test]
-        public void Input_Content_Illegal()
+        public void When_Input_Content_Illegal_Returns_StatusCode400()
         {
-            //輸入的內容不合法，回傳StatusCode 400
             Assume_Number_Incorrect_Format(_numInput);
 
             int? statusCode = SendMockDataToControllerAction();
