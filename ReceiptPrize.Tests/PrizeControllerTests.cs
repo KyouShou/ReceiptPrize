@@ -72,9 +72,8 @@ namespace ReceiptPrize.Tests
         }
 
         [Test]
-        public void Get_PrizeNum_Fail()
+        public void Get_PrizeNum_Fail_Returns_StatusCode501()
         {
-            //中獎號碼不存在或獲取號碼失敗，回傳StatusCode 501
             Assume_Prize_Number_Not_Exist(_numInput);
 
             int? statusCode = SendMockDataToControllerAction();
