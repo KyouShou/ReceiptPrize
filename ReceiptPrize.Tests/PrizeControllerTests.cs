@@ -57,9 +57,8 @@ namespace ReceiptPrize.Tests
         }
 
         [Test]
-        public void Win()
+        public void Given_Win_Number_Returns_StatusCode200()
         {
-            //中獎，回傳StatusCode 200
             Assume_Number_Win(_numInput);
 
             int? statusCode = SendMockDataToControllerAction();
