@@ -79,13 +79,11 @@ namespace ReceiptPrize.Tests
             int? statusCode = SendMockDataToControllerAction();
 
             Assert.AreEqual(400, statusCode);
-
-            Assert.Fail();
         }
 
         private void Assume_Number_Incorrect_Format(string numInput)
         {
-            _checkPrizeServiceMock.Setup(m => m.Check(numInput)).Throws(new NumberFormatErrorException("輸入數字格是錯誤"));
+            _checkPrizeServiceMock.Setup(m => m.Check(numInput)).Throws(new NumberFormatErrorException("輸入數字格式錯誤"));
         }
     }
 }
