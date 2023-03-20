@@ -30,7 +30,7 @@ namespace ReceiptPrize.Tests
         [Test]
         public void Did_Not_Win_Returns_False()
         {
-            var inputNum = "000";
+            var inputNum = "111";
             var fetchPrizeServiceMock = new Mock<IFetchPrizeNumService>();
 
             List<string> fakePrizeNumberList = new List<string>();
@@ -42,7 +42,7 @@ namespace ReceiptPrize.Tests
 
             var result = checkPrizeService.Check(inputNum);
 
-            Assert.AreEqual(true , result);
+            Assert.AreEqual(false , result);
         }
 
         //[Test]
