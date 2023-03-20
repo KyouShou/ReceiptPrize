@@ -1,4 +1,6 @@
-﻿namespace ReceiptPrize.Service
+﻿using ReceiptPrize.Exceptions;
+
+namespace ReceiptPrize.Service
 {
     public class CheckPrizeService : ICheckPrizeService
     {
@@ -11,6 +13,11 @@
 
         public bool Check(string num)
         {
+            if (!IsInputNumFormatCorrect(num))
+            {
+                throw new NumberFormatErrorException();
+            }
+
             var prizeList = _fetchPrizeNumService.GetPrizeNumber();
 
             if (prizeList.Exists(prize => prize.Equals(num)))
@@ -21,6 +28,21 @@
             {
                 return false;
             }
+        }
+
+        private bool IsInputNumFormatCorrect(string num)
+        {
+            if (num.Length != 3)
+            {
+                return false;
+            }
+
+            if (!int.TryParse(num, out int parseResult))
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
