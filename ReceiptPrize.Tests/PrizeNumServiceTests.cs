@@ -26,7 +26,7 @@ namespace ReceiptPrize.Tests
         {
             List<string> prizeList = Fetch_PrizeList_From_MinistryOfFinance();
 
-            Check_Is_NunInList_Legal(prizeList);
+            Check_Is_NunFomatInList_Correct(prizeList);
 
             Check_Is_PrizeList_Not_Empty(prizeList);
         }
@@ -36,7 +36,7 @@ namespace ReceiptPrize.Tests
             Assert.IsTrue(prizeList.Count > 0);
         }
 
-        private void Check_Is_NunInList_Legal(List<string> prizeList)
+        private void Check_Is_NunFomatInList_Correct(List<string> prizeList)
         {
             foreach (var num in prizeList)
             {
