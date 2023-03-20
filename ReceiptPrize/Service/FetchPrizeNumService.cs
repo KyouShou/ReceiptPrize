@@ -2,11 +2,11 @@
 
 namespace ReceiptPrize.Service
 {
-    public class PrizeNumService
+    public class FetchPrizeNumService : IFetchPrizeNumService
     {
         private IPrizeNumRepository _repository;
 
-        public PrizeNumService(IPrizeNumRepository repository)
+        public FetchPrizeNumService(IPrizeNumRepository repository)
         {
             this._repository = repository;
         }

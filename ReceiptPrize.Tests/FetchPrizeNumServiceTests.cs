@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ReceiptPrize.Tests
 {
-    internal class PrizeNumServiceTests
+    internal class FetchPrizeNumServiceTests
     {
         [SetUp]
         public void Setup()
@@ -47,7 +47,7 @@ namespace ReceiptPrize.Tests
         private List<string> Fetch_PrizeList_From_MinistryOfFinance()
         {
             IPrizeNumRepository ministryOfFinancePrizeNumRepository = new MinistryOfFinancePrizeNumRepository();
-            PrizeNumService prizeNumService = new PrizeNumService(ministryOfFinancePrizeNumRepository);
+            FetchPrizeNumService prizeNumService = new FetchPrizeNumService(ministryOfFinancePrizeNumRepository);
 
             var prizeList = prizeNumService.GetPrizeNumber();
             return prizeList;
