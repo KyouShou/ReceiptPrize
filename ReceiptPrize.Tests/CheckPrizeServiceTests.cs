@@ -71,6 +71,8 @@ namespace ReceiptPrize.Tests
         [TestCase("0000")]
         [TestCase("-000")]
         [TestCase("-77")]
+        [TestCase("")]
+        [TestCase(null)]
         public void Input_Illegal_Number_Throws_NumberFormatErrorException(string fakeInputNum)
         {
             CheckPrizeService checkPrizeService = Assume_Prize_Number_Is("000");
