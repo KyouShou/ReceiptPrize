@@ -32,6 +32,11 @@ namespace ReceiptPrize.Service
 
         private bool IsInputNumFormatCorrect(string num)
         {
+            if (String.IsNullOrEmpty(num))
+            {
+                return false;
+            }
+
             if (num.Length != 3)
             {
                 return false;
