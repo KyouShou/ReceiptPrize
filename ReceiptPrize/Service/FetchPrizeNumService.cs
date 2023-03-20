@@ -1,4 +1,5 @@
-﻿using ReceiptPrize.Repository;
+﻿using ReceiptPrize.Exceptions;
+using ReceiptPrize.Repository;
 
 namespace ReceiptPrize.Service
 {
@@ -13,7 +14,23 @@ namespace ReceiptPrize.Service
 
         public List<string> GetPrizeNumber()
         {
-            return _repository.GetPrizeNum();
+            try
+            {
+                var result = _repository.GetPrizeNum();
+
+                if (result.Count >= 1)
+                {
+                    return result;
+                }
+                else
+                {
+                    throw new FetchPrizeFailException();
+                }
+            }
+            catch
+            {
+                throw new FetchPrizeFailException();
+            }
         }
     }
 }
