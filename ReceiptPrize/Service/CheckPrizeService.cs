@@ -42,6 +42,11 @@ namespace ReceiptPrize.Service
                 return false;
             }
 
+            if (parseResult < 0)
+            {
+                return false;
+            }
+
             return true;
         }
     }

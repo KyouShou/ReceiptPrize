@@ -66,9 +66,13 @@ namespace ReceiptPrize.Tests
         }
 
         [Test]
-        public void Input_Content_Illegal_Throws_NumberFormatErrorException()
+        [TestCase("abc")]
+        [TestCase("12")]
+        [TestCase("0000")]
+        [TestCase("-000")]
+        [TestCase("-77")]
+        public void Input_Illegal_Number_Throws_NumberFormatErrorException(string fakeInputNum)
         {
-            var fakeInputNum = "aaa";
             CheckPrizeService checkPrizeService = Assume_Prize_Number_Is("000");
 
             Assert.Throws<NumberFormatErrorException>(() => checkPrizeService.Check(fakeInputNum));
