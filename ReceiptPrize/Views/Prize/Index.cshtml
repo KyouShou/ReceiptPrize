@@ -1,0 +1,40 @@
+﻿<div>
+    <form class="add-item" method="post" action="/Prize/Check">
+        <input class="numInput" name="numInput" placeholder="請輸入發票末三碼..." />
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.3.js"></script>
+<script>
+    $('.numInput').bind('input propertychange', function () {
+        var numInput = $('.numInput').val();
+        if (numInput.length == 3) {
+            $.ajax({
+                type: "POST",
+                url: "/Prize/Check",
+                data: { "numInput": $(".numInput").val() },
+                complete: function (XMLHttpRequest, textStatus) {
+                    var statusCode = XMLHttpRequest.status;
+                    if (statusCode == 200) {
+                        alert($(".numInput").val() + '可能中獎了，趕快對獎!');
+                    }
+                    else if (statusCode == 202){
+                        $(".numInput").val("");
+                    }
+                    else if(statusCode == 400){
+                        $(".numInput").val("");
+                        alert('輸入格式錯誤!');
+                    }
+                    else if (statusCode == 400) {
+                        alert('無法取得中獎號碼');
+                    }
+                    else{
+                        alert('發生未知問題');
+                    }
+                }
+            });
+        }
+    });
+
+
+</script>
