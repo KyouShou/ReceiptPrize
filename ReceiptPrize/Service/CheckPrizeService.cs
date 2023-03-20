@@ -20,7 +20,15 @@ namespace ReceiptPrize.Service
 
             var prizeList = _fetchPrizeNumService.GetPrizeNumber();
 
-            if (prizeList.Exists(prize => prize.Equals(num)))
+            var prizeListWithLastThreeWords = new List<string>();
+
+            foreach (var prizeNum in prizeList)
+            {
+                var lastThreeWords = prizeNum.Substring(5, 3);
+                prizeListWithLastThreeWords.Add(lastThreeWords);
+            }
+
+            if (prizeListWithLastThreeWords.Exists(prize => prize.Equals(num)))
             {
                 return true;
             }

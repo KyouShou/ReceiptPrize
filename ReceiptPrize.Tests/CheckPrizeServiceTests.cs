@@ -31,7 +31,7 @@ namespace ReceiptPrize.Tests
         public void Did_Not_Win_Returns_False()
         {
             var fakeInputNum = "111";
-            CheckPrizeService checkPrizeService = Assume_Prize_Number_Is("000");
+            CheckPrizeService checkPrizeService = Assume_Prize_Number_Is("11111000");
             var result = checkPrizeService.Check(fakeInputNum);
 
             Assert.AreEqual(false, result);
@@ -59,7 +59,7 @@ namespace ReceiptPrize.Tests
         public void Win_Returns_True()
         {
             var fakeInputNum = "000";
-            CheckPrizeService checkPrizeService = Assume_Prize_Number_Is("000");
+            CheckPrizeService checkPrizeService = Assume_Prize_Number_Is("11111000");
             var result = checkPrizeService.Check(fakeInputNum);
 
             Assert.AreEqual(true, result);
@@ -75,7 +75,7 @@ namespace ReceiptPrize.Tests
         [TestCase(null)]
         public void Input_Illegal_Number_Throws_NumberFormatErrorException(string fakeInputNum)
         {
-            CheckPrizeService checkPrizeService = Assume_Prize_Number_Is("000");
+            CheckPrizeService checkPrizeService = Assume_Prize_Number_Is("00000000");
 
             Assert.Throws<NumberFormatErrorException>(() => checkPrizeService.Check(fakeInputNum));
         }
@@ -83,12 +83,14 @@ namespace ReceiptPrize.Tests
         [Test]
         public void Can_Not_Fetch_PrizeNumbers_Throws_FetchPrizeFailException()
         {
+            var fakeInputNum = "000";
+
             var fetchPrizeServiceMock = new Mock<IFetchPrizeNumService>();
             fetchPrizeServiceMock.Setup(m => m.GetPrizeNumber()).Throws(new FetchPrizeFailException());
 
             CheckPrizeService checkPrizeService = new CheckPrizeService(fetchPrizeServiceMock.Object);
 
-            Assert.Throws<FetchPrizeFailException>(() => checkPrizeService.Check("000"));
+            Assert.Throws<FetchPrizeFailException>(() => checkPrizeService.Check(fakeInputNum));
         }
     }
 }
