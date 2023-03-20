@@ -31,13 +31,13 @@ namespace ReceiptPrize.Tests
         }
 
         [Test]
-        public void When_Did_Not_Win_Returns_StatusCode204()
+        public void When_Did_Not_Win_Returns_StatusCode202()
         {
             Assume_Number_Did_Not_Win(_numInput);
 
             int? statusCode = SendMockDataToControllerAction();
 
-            Assert.AreEqual(204, statusCode);
+            Assert.AreEqual(202, statusCode);
         }
 
         private void Assume_Number_Did_Not_Win(string numInput)

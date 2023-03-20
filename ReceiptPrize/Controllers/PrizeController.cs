@@ -33,7 +33,7 @@ namespace ReceiptPrize.Controllers
                 else
                 {
                     var content = Content("沒中獎");
-                    content.StatusCode = 204;
+                    content.StatusCode = 202;
                     return content;
                 }
             }
