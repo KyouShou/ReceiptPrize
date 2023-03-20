@@ -1,7 +1,15 @@
+using ReceiptPrize.Repository;
+using ReceiptPrize.Service;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddTransient<ICheckPrizeService>(service =>
+    new CheckPrizeService(
+    new FetchPrizeNumService(
+    new MinistryOfFinancePrizeNumRepository(
+))));
 
 var app = builder.Build();
 
