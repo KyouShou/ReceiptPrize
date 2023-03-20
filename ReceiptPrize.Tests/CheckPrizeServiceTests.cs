@@ -78,10 +78,15 @@ namespace ReceiptPrize.Tests
             Assert.Throws<NumberFormatErrorException>(() => checkPrizeService.Check(fakeInputNum));
         }
 
-        //[Test]
-        //public void Can_Not_Fetch_PrizeNumbers_Throws_FetchPrizeFailException()
-        //{
-        //    Assert.Fail();
-        //}
+        [Test]
+        public void Can_Not_Fetch_PrizeNumbers_Throws_FetchPrizeFailException()
+        {
+            var fetchPrizeServiceMock = new Mock<IFetchPrizeNumService>();
+            fetchPrizeServiceMock.Setup(m => m.GetPrizeNumber()).Throws(new FetchPrizeFailException());
+
+            CheckPrizeService checkPrizeService = new CheckPrizeService(fetchPrizeServiceMock.Object);
+
+            Assert.Throws<FetchPrizeFailException>(() => checkPrizeService.Check("000"));
+        }
     }
 }
