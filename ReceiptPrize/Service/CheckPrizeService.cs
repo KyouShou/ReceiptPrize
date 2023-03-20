@@ -11,7 +11,16 @@
 
         public bool Check(string num)
         {
-            throw new NotImplementedException();
+            var prizeList = _fetchPrizeNumService.GetPrizeNumber();
+
+            if (prizeList.Exists(prize => prize.Equals(num)))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
