@@ -15,7 +15,7 @@
 
             if (prizeList.Exists(prize => prize.Equals(num)))
             {
-                return true;
+                throw new NotImplementedException();
             }
             else
             {

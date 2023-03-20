@@ -30,26 +30,40 @@ namespace ReceiptPrize.Tests
         [Test]
         public void Did_Not_Win_Returns_False()
         {
-            var inputNum = "111";
+            var fakeInputNum = "111";
+            CheckPrizeService checkPrizeService = Assume_Prize_Number_Is("000");
+            var result = checkPrizeService.Check(fakeInputNum);
+
+            Assert.AreEqual(false, result);
+        }
+
+        private static CheckPrizeService Assume_Prize_Number_Is(string prizeNum)
+        {
+            List<string> fakePrizeNumberList = GenerateMockPrizeListWithNum(prizeNum);
+
             var fetchPrizeServiceMock = new Mock<IFetchPrizeNumService>();
-
-            List<string> fakePrizeNumberList = new List<string>();
-            fakePrizeNumberList.Add("000");
-
             fetchPrizeServiceMock.Setup(m => m.GetPrizeNumber()).Returns(fakePrizeNumberList);
 
             CheckPrizeService checkPrizeService = new CheckPrizeService(fetchPrizeServiceMock.Object);
-
-            var result = checkPrizeService.Check(inputNum);
-
-            Assert.AreEqual(false , result);
+            return checkPrizeService;
         }
 
-        //[Test]
-        //public void Win_Returns_True()
-        //{
-        //    Assert.Fail();
-        //}
+        private static List<string> GenerateMockPrizeListWithNum(string num)
+        {
+            List<string> fakePrizeNumberList = new List<string>();
+            fakePrizeNumberList.Add(num);
+            return fakePrizeNumberList;
+        }
+
+        [Test]
+        public void Win_Returns_True()
+        {
+            var fakeInputNum = "000";
+            CheckPrizeService checkPrizeService = Assume_Prize_Number_Is("000");
+            var result = checkPrizeService.Check(fakeInputNum);
+
+            Assert.AreEqual(true, result);
+        }
 
         //[Test]
         //public void Input_Content_Illegal_Throws_NumberFormatErrorException()
