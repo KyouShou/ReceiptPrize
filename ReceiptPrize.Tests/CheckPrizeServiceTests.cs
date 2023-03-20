@@ -65,11 +65,14 @@ namespace ReceiptPrize.Tests
             Assert.AreEqual(true, result);
         }
 
-        //[Test]
-        //public void Input_Content_Illegal_Throws_NumberFormatErrorException()
-        //{
-        //    Assert.Fail();
-        //}
+        [Test]
+        public void Input_Content_Illegal_Throws_NumberFormatErrorException()
+        {
+            var fakeInputNum = "aaa";
+            CheckPrizeService checkPrizeService = Assume_Prize_Number_Is("000");
+
+            Assert.Throws<NumberFormatErrorException>(() => checkPrizeService.Check(fakeInputNum));
+        }
 
         //[Test]
         //public void Can_Not_Fetch_PrizeNumbers_Throws_FetchPrizeFailException()
