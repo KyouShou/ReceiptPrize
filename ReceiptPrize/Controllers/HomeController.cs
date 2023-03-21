@@ -15,7 +15,7 @@ namespace ReceiptPrize.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return Redirect("/Prize");
         }
 
         public IActionResult Privacy()
