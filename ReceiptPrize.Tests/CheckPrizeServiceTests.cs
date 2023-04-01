@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using Moq;
 using ReceiptPrize.Controllers;
 using ReceiptPrize.Exceptions;
@@ -91,6 +92,30 @@ namespace ReceiptPrize.Tests
             CheckPrizeService checkPrizeService = new CheckPrizeService(fetchPrizeServiceMock.Object);
 
             Assert.Throws<FetchPrizeFailException>(() => checkPrizeService.Check(fakeInputNum));
+        }
+
+        [Test]
+        public void GetPrizeDataFromCache_Success()
+        {
+            //Arrange
+            var fetchPrizeServiceMock = new Mock<FetchPrizeNumService>();
+
+            var prizeListFake = new List<string>() {"11111111"};
+
+            var prizeListOutFromCache = new List<string>();
+            var cacheStub = new Mock<IMemoryCache>();
+            cacheStub.Setup(m => m.TryGetValue("prizeListInCache", out prizeListFake)).Returns(true);
+            cacheStub.Setup(m => m.Get<List<string>>("prizeListInCache")).Returns(prizeListFake);
+
+
+            var checkPrizeService = new CheckPrizeService(fetchPrizeServiceMock.Object , cacheStub.Object);
+            var inputNum = "111";
+
+            //Act
+            var isWin = checkPrizeService.Check(inputNum);
+
+            //Assert
+            Assert.True(isWin);
         }
     }
 }
