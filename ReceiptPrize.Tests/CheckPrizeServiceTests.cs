@@ -45,7 +45,11 @@ namespace ReceiptPrize.Tests
             var fetchPrizeServiceMock = new Mock<IFetchPrizeNumService>();
             fetchPrizeServiceMock.Setup(m => m.GetPrizeNumber()).Returns(fakePrizeNumberList);
 
-            CheckPrizeService checkPrizeService = new CheckPrizeService(fetchPrizeServiceMock.Object);
+            var prizeListFake = new List<string>();
+            var cache = new MemoryCache(new MemoryCacheOptions());
+            cache.Set<List<string>>("prizeListInCache", new List<string>());
+
+            CheckPrizeService checkPrizeService = new CheckPrizeService(fetchPrizeServiceMock.Object , cache);
             return checkPrizeService;
         }
 
@@ -89,7 +93,10 @@ namespace ReceiptPrize.Tests
             var fetchPrizeServiceMock = new Mock<IFetchPrizeNumService>();
             fetchPrizeServiceMock.Setup(m => m.GetPrizeNumber()).Throws(new FetchPrizeFailException());
 
-            CheckPrizeService checkPrizeService = new CheckPrizeService(fetchPrizeServiceMock.Object);
+            var cache = new MemoryCache(new MemoryCacheOptions());
+            cache.Set<List<string>>("prizeListInCache" , new List<string>());
+
+            CheckPrizeService checkPrizeService = new CheckPrizeService(fetchPrizeServiceMock.Object , cache);
 
             Assert.Throws<FetchPrizeFailException>(() => checkPrizeService.Check(fakeInputNum));
         }
@@ -103,12 +110,11 @@ namespace ReceiptPrize.Tests
             var prizeListFake = new List<string>() {"11111111"};
 
             var prizeListOutFromCache = new List<string>();
-            var cacheStub = new Mock<IMemoryCache>();
-            cacheStub.Setup(m => m.TryGetValue("prizeListInCache", out prizeListFake)).Returns(true);
-            cacheStub.Setup(m => m.Get<List<string>>("prizeListInCache")).Returns(prizeListFake);
+            var cache = new MemoryCache(new MemoryCacheOptions());
+            cache.Set<List<string>>("prizeListInCache", prizeListFake);
 
 
-            var checkPrizeService = new CheckPrizeService(fetchPrizeServiceMock.Object , cacheStub.Object);
+            var checkPrizeService = new CheckPrizeService(fetchPrizeServiceMock.Object , cache);
             var inputNum = "111";
 
             //Act

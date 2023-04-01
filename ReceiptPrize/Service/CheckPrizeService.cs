@@ -1,14 +1,35 @@
-﻿using ReceiptPrize.Exceptions;
+﻿using Microsoft.Extensions.Caching.Memory;
+using ReceiptPrize.Exceptions;
 
 namespace ReceiptPrize.Service
 {
     public class CheckPrizeService : ICheckPrizeService
     {
         IFetchPrizeNumService _fetchPrizeNumService;
+        IMemoryCache _cache;
 
         public CheckPrizeService(IFetchPrizeNumService fetchPrizeNumService)
         {
             this._fetchPrizeNumService = fetchPrizeNumService;
+        }
+
+        public CheckPrizeService(IFetchPrizeNumService fetchPrizeNumService , IMemoryCache cache)
+        {
+            this._fetchPrizeNumService = fetchPrizeNumService;
+            this._cache = cache;
+        }
+
+        private List<string> GetPrizeListFromCache()
+        {
+            var result = new List<string>();
+            if (_cache.TryGetValue("prizeListInCache", out result) && result.Count > 0)
+            {
+                return result;
+            }
+            else
+            {
+                throw new NoPrizeListInCacheException();
+            }           
         }
 
         public bool Check(string num)
@@ -18,7 +39,15 @@ namespace ReceiptPrize.Service
                 throw new NumberFormatErrorException();
             }
 
-            var prizeList = _fetchPrizeNumService.GetPrizeNumber();
+            var prizeList = new List<string>();
+            try
+            {
+                prizeList = GetPrizeListFromCache();
+            }
+            catch
+            {
+                prizeList = _fetchPrizeNumService.GetPrizeNumber();
+            }         
 
             var prizeListWithLastThreeWords = new List<string>();
 
