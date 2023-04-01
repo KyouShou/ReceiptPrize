@@ -120,6 +120,7 @@ namespace ReceiptPrize.Tests
 
             //Assert
             Assert.True(isWin);
+            fetchPrizeServiceMock.Verify(m => m.GetPrizeNumber(), Times.Exactly(0));
         }
     }
 }

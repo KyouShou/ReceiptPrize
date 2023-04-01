@@ -13,7 +13,7 @@ namespace ReceiptPrize.Service
             this._fetchPrizeNumService = fetchPrizeNumService;
         }
 
-        public CheckPrizeService(IFetchPrizeNumService fetchPrizeNumService , IMemoryCache cache)
+        public CheckPrizeService(IFetchPrizeNumService fetchPrizeNumService, IMemoryCache cache)
         {
             this._fetchPrizeNumService = fetchPrizeNumService;
             this._cache = cache;
@@ -29,7 +29,7 @@ namespace ReceiptPrize.Service
             else
             {
                 throw new NoPrizeListInCacheException();
-            }           
+            }
         }
 
         public bool Check(string num)
@@ -42,12 +42,13 @@ namespace ReceiptPrize.Service
             var prizeList = new List<string>();
             try
             {
+                throw new NoPrizeListInCacheException();
                 prizeList = GetPrizeListFromCache();
             }
-            catch
+            catch (NoPrizeListInCacheException e)
             {
                 prizeList = _fetchPrizeNumService.GetPrizeNumber();
-            }         
+            }
 
             var prizeListWithLastThreeWords = new List<string>();
 
