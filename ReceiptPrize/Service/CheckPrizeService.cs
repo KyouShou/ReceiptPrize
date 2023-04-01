@@ -42,7 +42,6 @@ namespace ReceiptPrize.Service
             var prizeList = new List<string>();
             try
             {
-                throw new NoPrizeListInCacheException();
                 prizeList = GetPrizeListFromCache();
             }
             catch (NoPrizeListInCacheException e)
