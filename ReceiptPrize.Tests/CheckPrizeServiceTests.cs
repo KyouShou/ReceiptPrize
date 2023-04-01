@@ -105,14 +105,12 @@ namespace ReceiptPrize.Tests
         public void GetPrizeDataFromCache_Success()
         {
             //Arrange
-            var fetchPrizeServiceMock = new Mock<FetchPrizeNumService>();
+            var fetchPrizeServiceMock = new Mock<IFetchPrizeNumService>();
 
             var prizeListFake = new List<string>() {"11111111"};
 
-            var prizeListOutFromCache = new List<string>();
             var cache = new MemoryCache(new MemoryCacheOptions());
             cache.Set<List<string>>("prizeListInCache", prizeListFake);
-
 
             var checkPrizeService = new CheckPrizeService(fetchPrizeServiceMock.Object , cache);
             var inputNum = "111";
