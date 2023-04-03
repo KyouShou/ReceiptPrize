@@ -122,5 +122,27 @@ namespace ReceiptPrize.Tests
             Assert.True(isWin);
             fetchPrizeServiceMock.Verify(m => m.GetPrizeNumber(), Times.Exactly(0));
         }
+
+        [Test]
+        public void GetPrizeDataFromCache_Fail()
+        {
+            //Arrange
+            var fetchPrizeServiceMock = new Mock<IFetchPrizeNumService>();
+
+            var prizeListFake = new List<string>() { "11111111" };
+            fetchPrizeServiceMock.Setup(m => m.GetPrizeNumber()).Returns(prizeListFake);
+
+            var cache = new MemoryCache(new MemoryCacheOptions());           
+
+            var checkPrizeService = new CheckPrizeService(fetchPrizeServiceMock.Object, cache);
+            var inputNum = "111";
+
+            //Act
+            var isWin = checkPrizeService.Check(inputNum);
+
+            //Assert
+            Assert.True(isWin);
+            fetchPrizeServiceMock.Verify(m => m.GetPrizeNumber(), Times.Exactly(0));
+        }
     }
 }
