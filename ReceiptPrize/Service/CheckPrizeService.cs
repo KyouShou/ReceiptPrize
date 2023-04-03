@@ -47,6 +47,7 @@ namespace ReceiptPrize.Service
             catch (NoPrizeListInCacheException e)
             {
                 prizeList = _fetchPrizeNumService.GetPrizeNumber();
+                _cache.Set("prizeListInCache", prizeList);
             }
 
             var prizeListWithLastThreeWords = new List<string>();
