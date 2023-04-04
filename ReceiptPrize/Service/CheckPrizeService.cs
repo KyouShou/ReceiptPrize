@@ -32,14 +32,49 @@ namespace ReceiptPrize.Service
             }
         }
 
-        public bool Check(string num)
+        public bool Check(string inputNum)
         {
-            if (!IsInputNumFormatCorrect(num))
+            if (!IsInputNumFormatCorrect(inputNum))
             {
                 throw new NumberFormatErrorException();
             }
 
+            var prizeList = GetPrizeList();
+
+            var prizeListWithLastThreeWords = ParsePrizeListWithLastThreeWords(prizeList);
+
+            return IsInputNumMatchPrizeNum(inputNum, prizeListWithLastThreeWords);
+        }
+
+        private static bool IsInputNumMatchPrizeNum(string num, List<string> prizeListWithLastThreeWords)
+        {
+            if (prizeListWithLastThreeWords.Exists(prize => prize.Equals(num)))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private static List<string> ParsePrizeListWithLastThreeWords(List<string> prizeList)
+        {
+            var prizeListWithLastThreeWords = new List<string>();
+
+            foreach (var prizeNum in prizeList)
+            {
+                var lastThreeWords = prizeNum.Substring(5, 3);
+                prizeListWithLastThreeWords.Add(lastThreeWords);
+            }
+
+            return prizeListWithLastThreeWords;
+        }
+
+        private List<string> GetPrizeList()
+        {
             var prizeList = new List<string>();
+
             try
             {
                 prizeList = GetPrizeListFromCache();
@@ -50,22 +85,7 @@ namespace ReceiptPrize.Service
                 _cache.Set("prizeListInCache", prizeList);
             }
 
-            var prizeListWithLastThreeWords = new List<string>();
-
-            foreach (var prizeNum in prizeList)
-            {
-                var lastThreeWords = prizeNum.Substring(5, 3);
-                prizeListWithLastThreeWords.Add(lastThreeWords);
-            }
-
-            if (prizeListWithLastThreeWords.Exists(prize => prize.Equals(num)))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return prizeList;
         }
 
         private bool IsInputNumFormatCorrect(string num)
