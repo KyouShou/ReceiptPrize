@@ -108,12 +108,13 @@ namespace ReceiptPrize.Tests
             var fetchPrizeServiceMock = new Mock<IFetchPrizeNumService>();
 
             var prizeListFake = new List<string>() {"11111111"};
+            var inputNum = "111";
 
             var cache = new MemoryCache(new MemoryCacheOptions());
             cache.Set<List<string>>("prizeListInCache", prizeListFake);
 
             var checkPrizeService = new CheckPrizeService(fetchPrizeServiceMock.Object , cache);
-            var inputNum = "111";
+            
 
             //Act
             var isWin = checkPrizeService.Check(inputNum);
@@ -124,18 +125,20 @@ namespace ReceiptPrize.Tests
         }
 
         [Test]
-        public void GetPrizeDataFromCache_Fail()
+        public void GetPrizeDataFromCache_Fail_ShouldFetchDataFromWebsite()
         {
             //Arrange
             var fetchPrizeServiceMock = new Mock<IFetchPrizeNumService>();
 
             var prizeListFake = new List<string>() { "11111111" };
-            fetchPrizeServiceMock.Setup(m => m.GetPrizeNumber()).Returns(prizeListFake);
+            var inputNum = "111";
 
-            var cache = new MemoryCache(new MemoryCacheOptions());           
+            var cache = new MemoryCache(new MemoryCacheOptions());
+
+            fetchPrizeServiceMock.Setup(m => m.GetPrizeNumber()).Returns(prizeListFake);                     
 
             var checkPrizeService = new CheckPrizeService(fetchPrizeServiceMock.Object, cache);
-            var inputNum = "111";
+            
 
             //Act
             var isWin = checkPrizeService.Check(inputNum);
