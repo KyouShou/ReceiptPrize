@@ -105,14 +105,7 @@ namespace ReceiptPrize.Tests
         public void Can_Not_Fetch_PrizeNumbers_Throws_FetchPrizeFailException()
         {
             var fakeInputNum = "000";
-
-            var fetchPrizeServiceMock = new Mock<IFetchPrizeNumService>();
-            fetchPrizeServiceMock.Setup(m => m.GetPrizeNumber()).Throws(new FetchPrizeFailException());
-
-            var cache = new MemoryCache(new MemoryCacheOptions());
-            cache.Set<List<string>>("prizeListInCache" , new List<string>());
-
-            CheckPrizeService checkPrizeService = new CheckPrizeService(fetchPrizeServiceMock.Object , cache);
+            var checkPrizeService = _checkPrizeServiceBuilder.SetExceptionToFetchPrizeNumService(new FetchPrizeFailException()).Build();
 
             Assert.Throws<FetchPrizeFailException>(() => checkPrizeService.Check(fakeInputNum));
         }
