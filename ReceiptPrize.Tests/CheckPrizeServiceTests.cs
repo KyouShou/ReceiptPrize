@@ -15,11 +15,13 @@ namespace ReceiptPrize.Tests
 {
     internal class CheckPrizeServiceTests
     {
+        private CheckPrizeService _checkPrizeService;
+        private CheckPrizeServiceBuilder _checkPrizeServiceBuilder;
 
         [SetUp]
         public void Setup()
         {
-
+            _checkPrizeServiceBuilder = new CheckPrizeServiceBuilder();
         }
 
         [TearDown]
@@ -31,11 +33,18 @@ namespace ReceiptPrize.Tests
         [Test]
         public void Did_Not_Win_Returns_False()
         {
+            //Arrange
             var fakeInputNum = "111";
-            CheckPrizeService checkPrizeService = Assume_Prize_Number_Is("11111000");
-            var result = checkPrizeService.Check(fakeInputNum);
+            var fakePrizeNum = new List<string>() { "11111000" };
+            var checkPrizeService = _checkPrizeServiceBuilder
+                .SetFakePrizeNumToFetchPrizeNumService(fakePrizeNum)
+                .Build();
 
-            Assert.AreEqual(false, result);
+            //Act
+            var actual = checkPrizeService.Check(fakeInputNum);
+
+            //Assert
+            Assert.AreEqual(false, actual);
         }
 
         private static CheckPrizeService Assume_Prize_Number_Is(string prizeNum)
