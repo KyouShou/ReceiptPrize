@@ -105,7 +105,9 @@ namespace ReceiptPrize.Tests
         public void Can_Not_Fetch_PrizeNumbers_Throws_FetchPrizeFailException()
         {
             var fakeInputNum = "000";
-            var checkPrizeService = _checkPrizeServiceBuilder.SetExceptionToFetchPrizeNumService(new FetchPrizeFailException()).Build();
+            var checkPrizeService = _checkPrizeServiceBuilder
+                .SetExceptionToFetchPrizeNumService(new FetchPrizeFailException())
+                .Build();
 
             Assert.Throws<FetchPrizeFailException>(() => checkPrizeService.Check(fakeInputNum));
         }
@@ -114,25 +116,19 @@ namespace ReceiptPrize.Tests
         public void GetPrizeDataFromCache_Success()
         {
             //Arrange
-            //var fetchPrizeServiceMock = new Mock<IFetchPrizeNumService>();
-
             var prizeListFake = new List<string>() {"11111111"};
             var inputNum = "111";
 
-            //var cache = new MemoryCache(new MemoryCacheOptions());
-            //cache.Set<List<string>>("prizeListInCache", prizeListFake);
-
-            //var checkPrizeService = new CheckPrizeService(fetchPrizeServiceMock.Object , cache);
-
-
-            var checkPrizeService = _checkPrizeServiceBuilder.SetFakePrizeNumToMemoryCache(prizeListFake).Build();
+            var fetchPrizeServiceMock = _checkPrizeServiceBuilder.FetchPrizeNumService;
+            var checkPrizeService = _checkPrizeServiceBuilder
+                .SetFakePrizeNumToMemoryCache(prizeListFake)
+                .Build();
 
             //Act
-            var isWin = checkPrizeService.Check(inputNum);
-            var fetchPrizeServiceMock = _checkPrizeServiceBuilder.FetchPrizeNumService;
+            var actual = checkPrizeService.Check(inputNum);
 
             //Assert
-            Assert.True(isWin);
+            Assert.True(actual);
             fetchPrizeServiceMock.Verify(m => m.GetPrizeNumber(), Times.Exactly(0));
         }
 
@@ -140,23 +136,19 @@ namespace ReceiptPrize.Tests
         public void GetPrizeDataFromCache_Fail_ShouldFetchDataFromWebsite()
         {
             //Arrange
-            var fetchPrizeServiceMock = new Mock<IFetchPrizeNumService>();
-
             var prizeListFake = new List<string>() { "11111111" };
             var inputNum = "111";
 
-            var cache = new MemoryCache(new MemoryCacheOptions());
-
-            fetchPrizeServiceMock.Setup(m => m.GetPrizeNumber()).Returns(prizeListFake);                     
-
-            var checkPrizeService = new CheckPrizeService(fetchPrizeServiceMock.Object, cache);
-            
+            var fetchPrizeServiceMock = _checkPrizeServiceBuilder.FetchPrizeNumService;
+            var checkPrizeService = _checkPrizeServiceBuilder
+                .SetFakePrizeNumToFetchPrizeNumService(prizeListFake)
+                .Build();
 
             //Act
-            var isWin = checkPrizeService.Check(inputNum);
+            var actual = checkPrizeService.Check(inputNum);
 
             //Assert
-            Assert.True(isWin);
+            Assert.True(actual);
             fetchPrizeServiceMock.Verify(m => m.GetPrizeNumber(), Times.Exactly(1));
         }
     }
