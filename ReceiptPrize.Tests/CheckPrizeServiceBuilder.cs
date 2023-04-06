@@ -13,20 +13,22 @@ namespace ReceiptPrize.Tests
     {
         private CheckPrizeService _checkPrizeService;
         private IFetchPrizeNumService _fetchPrizeNumService;
+        private Mock<IFetchPrizeNumService> _fetchPrizeNumServiceMock;
         private MemoryCache _memoryCache;
+
+        public Mock<IFetchPrizeNumService> FetchPrizeNumService { get { return _fetchPrizeNumServiceMock; } }
 
         public CheckPrizeServiceBuilder()
         {
             _memoryCache = new MemoryCache(new MemoryCacheOptions());
+            _fetchPrizeNumServiceMock = new Mock<IFetchPrizeNumService>();
         }
 
         public CheckPrizeServiceBuilder SetFakePrizeNumToFetchPrizeNumService(List<string> fakePrizeNum)
         {
-            var stubFetchPrizeNumService = new Mock<IFetchPrizeNumService>();
+            _fetchPrizeNumServiceMock.Setup(m => m.GetPrizeNumber()).Returns(fakePrizeNum);
 
-            stubFetchPrizeNumService.Setup(m => m.GetPrizeNumber()).Returns(fakePrizeNum);
-
-            this._fetchPrizeNumService = stubFetchPrizeNumService.Object;
+            this._fetchPrizeNumService = _fetchPrizeNumServiceMock.Object;
 
             return this;
         }
