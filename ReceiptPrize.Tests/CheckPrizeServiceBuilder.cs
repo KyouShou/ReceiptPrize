@@ -16,7 +16,7 @@ namespace ReceiptPrize.Tests
         private Mock<IFetchPrizeNumService> _fetchPrizeNumServiceMock;
         private MemoryCache _memoryCache;
 
-        public Mock<IFetchPrizeNumService> FetchPrizeNumService { get { return _fetchPrizeNumServiceMock; } }
+        public Mock<IFetchPrizeNumService> FetchPrizeNumServiceMock { get { return _fetchPrizeNumServiceMock; } }
 
         public CheckPrizeServiceBuilder()
         {

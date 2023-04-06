@@ -15,19 +15,12 @@ namespace ReceiptPrize.Tests
 {
     internal class CheckPrizeServiceTests
     {
-        private CheckPrizeService _checkPrizeService;
         private CheckPrizeServiceBuilder _checkPrizeServiceBuilder;
 
         [SetUp]
         public void Setup()
         {
             _checkPrizeServiceBuilder = new CheckPrizeServiceBuilder();
-        }
-
-        [TearDown]
-        public void End()
-        {
-
         }
 
         [Test]
@@ -45,28 +38,6 @@ namespace ReceiptPrize.Tests
 
             //Assert
             Assert.AreEqual(false, actual);
-        }
-
-        private static CheckPrizeService Assume_Prize_Number_Is(string prizeNum)
-        {
-            List<string> fakePrizeNumberList = GenerateMockPrizeListWithNum(prizeNum);
-
-            var fetchPrizeServiceMock = new Mock<IFetchPrizeNumService>();
-            fetchPrizeServiceMock.Setup(m => m.GetPrizeNumber()).Returns(fakePrizeNumberList);
-
-            var prizeListFake = new List<string>();
-            var cache = new MemoryCache(new MemoryCacheOptions());
-            cache.Set<List<string>>("prizeListInCache", new List<string>());
-
-            CheckPrizeService checkPrizeService = new CheckPrizeService(fetchPrizeServiceMock.Object , cache);
-            return checkPrizeService;
-        }
-
-        private static List<string> GenerateMockPrizeListWithNum(string num)
-        {
-            List<string> fakePrizeNumberList = new List<string>();
-            fakePrizeNumberList.Add(num);
-            return fakePrizeNumberList;
         }
 
         [Test]
@@ -119,7 +90,7 @@ namespace ReceiptPrize.Tests
             var prizeListFake = new List<string>() {"11111111"};
             var inputNum = "111";
 
-            var fetchPrizeServiceMock = _checkPrizeServiceBuilder.FetchPrizeNumService;
+            var fetchPrizeServiceMock = _checkPrizeServiceBuilder.FetchPrizeNumServiceMock;
             var checkPrizeService = _checkPrizeServiceBuilder
                 .SetFakePrizeNumToMemoryCache(prizeListFake)
                 .Build();
@@ -139,7 +110,7 @@ namespace ReceiptPrize.Tests
             var prizeListFake = new List<string>() { "11111111" };
             var inputNum = "111";
 
-            var fetchPrizeServiceMock = _checkPrizeServiceBuilder.FetchPrizeNumService;
+            var fetchPrizeServiceMock = _checkPrizeServiceBuilder.FetchPrizeNumServiceMock;
             var checkPrizeService = _checkPrizeServiceBuilder
                 .SetFakePrizeNumToFetchPrizeNumService(prizeListFake)
                 .Build();
