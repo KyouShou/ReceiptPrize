@@ -73,7 +73,11 @@ namespace ReceiptPrize.Tests
         public void Win_Returns_True()
         {
             var fakeInputNum = "000";
-            CheckPrizeService checkPrizeService = Assume_Prize_Number_Is("11111000");
+            var fakePrizeNum = new List<string>() { "11111000" };
+            var checkPrizeService = _checkPrizeServiceBuilder
+                .SetFakePrizeNumToFetchPrizeNumService(fakePrizeNum)
+                .Build();
+
             var result = checkPrizeService.Check(fakeInputNum);
 
             Assert.AreEqual(true, result);
